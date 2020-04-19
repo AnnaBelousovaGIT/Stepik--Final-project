@@ -5,14 +5,14 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
-from .locators import BasePageLocators
+from .locators import BasePageLocators, BasketPageLocators
 
 
 class BasePage():
     def __init__(self, browser: RemoteWebDriver, url, timeout=10):
         self.browser = browser
         self.url = url
-        # self.browser.implicitly_wait(timeout)
+        self.browser.implicitly_wait(timeout)
 
     def open(self):
         self.browser.get(self.url)
@@ -30,6 +30,11 @@ class BasePage():
         except (NoSuchElementException):
             return False
         return True
+
+    def go_to_basket_header_page(self):
+        view_cart_button = self.browser.find_element(*BasketPageLocators.BUTTON_BASKET_FROM_HEADER_PAGE)
+        view_cart_button.click()
+
 
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
